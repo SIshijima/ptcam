@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+
+<robot name="pan_tilt_camera">
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://ptcam_description/meshes/BaseUnit.stl"/>
+      </geometry>
+      <material name="red">
+        <color rgba="0.5 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="pantbl_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://ptcam_description/meshes/PanUnit3.stl"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 0.7 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="cam_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://ptcam_description/meshes/CamUnit3.stl"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 0.7 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="camera_frame">
+  </link>
+
+
+  <joint name="pan" type="revolute">
+    <parent link="base_link"/>
+    <child link="pantbl_link"/>
+    <origin xyz="0 0 0.0031" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+  </joint>
+
+  <joint name="tilt" type="revolute">
+    <parent link="pantbl_link"/>
+    <child link="cam_link"/>
+    <origin xyz="0.0128 -0.0122 0.017" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+  </joint>
+
+  <joint name="arm_camera" type="fixed">
+    <parent link="cam_link"/>
+    <child link="camera_frame"/>
+    <origin xyz="0.0126 0.0122 0.03825" rpy="-1.57 0 -1.57"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+  </joint>
+
+</robot>

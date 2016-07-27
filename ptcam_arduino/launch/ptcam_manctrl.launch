@@ -1,0 +1,19 @@
+<launch>
+   <arg name="model" default="$(find ptcam_description)/urdf/pan_tilt_camera.urdf"/>
+   <arg name="gui" default="True" />
+   <param name="robot_description" textfile="$(arg model)" />
+   <param name="use_gui" value="$(arg gui)"/>
+   
+   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+      <remap from="joint_states" to="joint_commands"/>
+   </node>
+
+   <node name="cmd_transform_p" pkg="topic_tools" type="transform" args="/joint_commands /pan/command std_msgs/Float64 'm.position[0]'"/>
+   <node name="cmd_transform_t" pkg="topic_tools" type="transform" args="/joint_commands /tilt/command std_msgs/Float64 'm.position[1]'"/>
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+   <node name="ptcam" pkg="ros_arduino_python" type="arduino_node.py" output="screen" clear_params="true">
+      <rosparam file="$(find ptcam_arduino)/config/ptcam_arduino_params.yaml" command="load" />
+   </node>
+
+</launch>

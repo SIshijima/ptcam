@@ -1,0 +1,16 @@
+<launch>
+   <arg name="model" default="$(find ptcam_description)/urdf/pan_tilt_camera.urdf"/>
+   <arg name="gui" default="True" />
+   <param name="robot_description" textfile="$(arg model)" />
+   <param name="use_gui" value="$(arg gui)"/>
+   
+
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+   <node name="ptcam" pkg="ros_arduino_python" type="arduino_node.py" output="screen" clear_params="true">
+      <rosparam file="$(find ptcam_arduino)/config/ptcam_arduino_params.yaml" command="load" />
+   </node>
+   <node name="follower" pkg="ptcam_arduino" type="follower.py">
+      <rosparam file="$(find ptcam_arduino)/config/ptcam_arduino_params.yaml" command="load" />
+   </node>
+
+</launch>
